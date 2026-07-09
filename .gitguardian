@@ -1,0 +1,20 @@
+# GitGuardian configuration file
+# https://docs.gitguardian.com/ggshield-docs/reference/configuration
+
+# Paths to ignore during scanning
+paths-ignore:
+  - "**/*.tests.ps1"   # Pester test files (may contain mock secrets)
+  - "**/fixtures/**"
+  - "**/tests/**"
+  - "**/test/**"
+
+# Specific secret categories to ignore (add as needed)
+# matches-ignore:
+#   - name: "Example ignore"
+#     match: "EXAMPLE_PATTERN"
+
+# Exit with a non-zero code if secrets are found (default: true)
+exit-zero: false
+
+# Verbosity: DEBUG, INFO, WARNING, ERROR
+verbose: false
