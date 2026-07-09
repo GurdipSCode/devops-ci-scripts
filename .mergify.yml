@@ -1,0 +1,56 @@
+# Mergify configuration file
+# https://docs.mergify.com/configuration/
+
+pull_request_rules:
+  - name: Auto-merge on approval and passing checks
+    conditions:
+      - "#approved-reviews-by >= 1"
+      - check-success=GitGuardian Scan
+      - -draft
+      - -conflict
+    actions:
+      merge:
+        method: squash
+        commit_message_template: |
+          {{ title }} (#{{ number }})
+
+          {{ body }}
+
+  - name: Request review when PR is ready
+    conditions:
+      - -draft
+      - -reviewed
+    actions:
+      request_reviews:
+        teams:
+          - your-team  # Replace with your GitHub team slug
+
+  - name: Label PRs with new scripts
+    conditions:
+      - files~=\.ps1$
+    actions:
+      label:
+        add:
+          - powershell
+
+  - name: Label PRs with CI/config changes
+    conditions:
+      - "files~=^\.github/"
+    actions:
+      label:
+        add:
+          - ci
+
+  - name: Warn on merge conflict
+    conditions:
+      - conflict
+    actions:
+      comment:
+        message: |
+          ⚠️ This PR has a merge conflict. Please resolve it before merging.
+
+  - name: Delete branch after merge
+    conditions:
+      - merged
+    actions:
+      delete_head_branch: {}
