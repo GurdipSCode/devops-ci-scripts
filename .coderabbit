@@ -1,0 +1,34 @@
+# CodeRabbit configuration file
+# https://docs.coderabbit.ai/getting-started/configure-coderabbit
+
+language: "en-US"
+
+reviews:
+  profile: "chill"           # chill | assertive
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+
+  path_filters:
+    - "!**/*.tests.ps1"      # Exclude Pester test files
+    - "!**/tests/**"
+    - "!**/fixtures/**"
+
+  path_instructions:
+    - path: "**/*.ps1"
+      instructions: |
+        Review PowerShell scripts with the following in mind:
+        - Enforce approved PowerShell verbs (Get-, Set-, New-, Remove-, etc.)
+        - Flag use of aliases (ls, cat, curl, wget) — prefer full cmdlet names
+        - Check for proper error handling (try/catch, $ErrorActionPreference)
+        - Suggest -WhatIf and -Confirm support for destructive operations
+        - Flag hardcoded credentials, paths, or environment-specific values
+        - Prefer $PSCmdlet.ShouldProcess() for functions that modify state
+        - Check that scripts include comment-based help (.SYNOPSIS, .DESCRIPTION, .PARAMETER, .EXAMPLE)
+        - Prefer [CmdletBinding()] on advanced functions
+        - Flag Write-Host in favour of Write-Output or Write-Verbose
+
+chat:
+  auto_reply: true
